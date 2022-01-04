@@ -3,14 +3,14 @@ import pygame
 from KSVE.UTILS.logger import *
 
 class Entity():
-    def __init__(self, view, image, start_pos=(10, 10), fixed=True):
+    def __init__(self, view, image, start_pos=(10, 10), fixed=True, width=100, height=100):
         self.view = view
 
         self.x = start_pos[0]
         self.y = start_pos[1]
 
-        self.width = 100
-        self.height = 100
+        self.width = width
+        self.height = height
 
         self.layer = 0
 
@@ -34,10 +34,9 @@ class Entity():
         if not fixed:
             self.poly_m = pymunk.moment_for_poly(1, self.shape.get_vertices())
 
-
-            # ADVANCED PHYSICS OPTIONS
-            self.shape.density = 3
-            self.shape.friction = 2
+        # ADVANCED PHYSICS OPTIONS
+        self.shape.density = 3
+        self.shape.friction = 2
 
         self.view.entities.append(self)
         loginfo("Entity created")
@@ -58,7 +57,7 @@ class Entity():
         surf.blit(self.image, (self.x-self.width/2, self.y-self.height/2, self.width, self.height))
 
     def draw_advanced_physics(self, surf):
-        draw_bb = True
+        draw_bb = False
         points = []
         for v in self.shape.get_vertices():
             x, y = v.rotated(self.shape.body.angle) + self.shape.body.position
